@@ -4,16 +4,33 @@ sqlite3.verbose();
 
 const db = new sqlite3.Database('./chat.db');
 
-db.serialize(() => {
-  db.run(`
-    CREATE TABLE IF NOT EXISTS messages (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      sessionId TEXT,
-      role TEXT,
-      content TEXT,
-      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-    )
-  `);
-});
+function saveMessage(sessionId, role, content) {
+  return new Promise((resolve, reject) => {
+    db.run(
+      "INSERT INTO messages (sessionId, role, content) VALUES (?, ?, ?)",
+      [sessionId, role, content],
+      function (err) {
+        if (err) reject(err);
+        else resolve(this.lastID);
+      }
+    );
+  });
+}
 
-module.exports = db;
+function getMessagesBySession(sessionId) {
+  return new Promise((resolve, reject) => {
+    db.all(
+      "SELECT role, content FROM messages WHERE sessionId = ? ORDER BY timestamp ASC",
+      [sessionId],
+      (err, rows) => {
+        if (err) reject(err);
+        else resolve(rows);
+      }
+    );
+  });
+}
+
+module.exports = {
+  saveMessage,
+  getMessagesBySession
+};
