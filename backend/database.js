@@ -1,3 +1,4 @@
+// Module to handle database operations for chat messages using SQLite
 import sqlite3 from 'sqlite3'
 
 sqlite3.verbose();
@@ -20,11 +21,11 @@ function saveMessage(sessionId, role, content) {
 function getMessagesBySession(sessionId) {
   return new Promise((resolve, reject) => {
     db.all(
-      "SELECT role, content FROM messages WHERE sessionId = ? ORDER BY timestamp ASC",
+      `SELECT role, content FROM messages WHERE sessionId = ? ORDER BY id DESC LIMIT 20`,
       [sessionId],
       (err, rows) => {
         if (err) reject(err);
-        else resolve(rows);
+        else resolve(rows.reverse()); // Reverse to get chronological order
       }
     );
   });

@@ -1,3 +1,4 @@
+// Module to handle interactions with the Ollama API for chat functionality
 import axios from 'axios';
 
 async function askOllama(messages) {

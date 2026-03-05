@@ -1,18 +1,19 @@
+// Module to handle chat interactions, including saving messages and communicating with the Ollama API
 import { saveMessage, getMessagesBySession } from './database';
 import { askOllama } from './ollamaService';
 
 async function handleChat(sessionId, userMessage) {
 
-  // 1. Salva messaggio utente
+  // 1. Save the user's message
   await saveMessage(sessionId, "user", userMessage);
 
-  // 2. Recupera storico
+  // 2. Retrieve chat history
   const history = await getMessagesBySession(sessionId);
 
-  // 3. Chiedi al modello
+  // 3. Ask the model
   const reply = await askOllama(history);
 
-  // 4. Salva risposta
+  // 4. Save the reply
   await saveMessage(sessionId, "assistant", reply);
 
   return reply;

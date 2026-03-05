@@ -1,7 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-
-const { handleChat } = require('./chatService');
+import { handleChat } from './chatService';
 
 const app = express();
 
