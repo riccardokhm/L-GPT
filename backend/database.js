@@ -5,6 +5,22 @@ sqlite3.verbose();
 
 const db = new sqlite3.Database('./chat.db');
 
+function initDatabase() {
+  return new Promise((resolve, reject) => {
+    db.run(`CREATE TABLE IF NOT EXISTS messages (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      sessionId TEXT,
+      role TEXT,
+      content TEXT
+    )`, (err) => {
+      if (err) reject(err);
+      else resolve();
+    });
+  });
+}
+
+
+
 function saveMessage(sessionId, role, content) {
   return new Promise((resolve, reject) => {
     db.run(
@@ -31,7 +47,6 @@ function getMessagesBySession(sessionId) {
   });
 }
 
-module.exports = {
-  saveMessage,
-  getMessagesBySession
-};
+
+
+export { initDatabase, saveMessage, getMessagesBySession };

@@ -14,6 +14,4 @@ async function askOllama(messages) {
   return response.data.message.content;
 }
 
-module.exports = {
-  askOllama
-};
+export { askOllama };
