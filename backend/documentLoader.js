@@ -9,15 +9,14 @@ function loadDocuments(folderPath){
 
     for(const file of files){
 
-    const fullPath = path.join(folderPath, file);
+        const fullPath = path.join(folderPath, file);
 
-    const content = fs.readFileSync(fullPath, "utf-8");
+        const content = fs.readFileSync(fullPath, "utf-8");
 
-    documents.push({
-    file: file,
-    content: content
-    });
-
+        documents.push({
+            file: file,
+            content: content
+        });
     }
 
     return documents;
