@@ -1,21 +1,28 @@
-// Creating the prompt builder for the AI to generate the response
-function buildPrompt(history, userMessage){
+function buildPrompt(history, userMessage, context) {
 
-const systemPrompt = {
-role: "system",
-content: "Sei un assistente AI utile. Rispondi sempre in italiano in modo chiaro."
-}
+    const systemPrompt = {
+        role: "system",
+        content: `
+            Sei un assistente AI utile.
 
-const messages = [
-systemPrompt,
-...history,
-{
-role: "user",
-content: userMessage
-}
-]
+            Rispondi sempre in italiano.
 
-return messages
+            Usa i documenti seguenti per rispondere alla domanda dell'utente.
+            Se l'informazione non è presente nei documenti, rispondi usando la tua conoscenza generale.
+
+            DOCUMENTI:
+            ${context}
+            `
+        }
+
+    return [
+        systemPrompt,
+        ...history,
+        {
+            role: "user",
+            content: userMessage
+        }
+    ]
 
 }
 

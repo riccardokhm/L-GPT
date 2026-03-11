@@ -16,4 +16,4 @@ function chunkText(text, chunkSize = 500){
 
 }
 
-export {chunkText};
+export default {chunkText};

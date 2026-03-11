@@ -2,23 +2,45 @@
 import { saveMessage, getMessagesBySession } from './database.js';
 import { askOllama } from './ollamaService.js';
 import buildPrompt from './promptBuilder.js';
+import createEmbedding from "./embeddingService.js";
+import findMostRelevant from "./vectorSearch.js";
+import { error } from 'console';
 
-async function handleChat(sessionId, userMessage) {
+async function handleChat(sessionId, userMessage, documents) {
 
-  // 1. Retrieve chat history (previous messages)
-  const history = await getMessagesBySession(sessionId);
+  try
+  {
+    // 1. Retrieve chat history (previous messages)
+    const history = await getMessagesBySession(sessionId);
 
-  // 2. Build the prompt with system prompt, history, and user message
-  const messages = buildPrompt(history, userMessage);
+    
+    // 2. Create the prompt embedding
+    const embedding = await createEmbedding(userMessage);
 
-  // 3. Ask the model
-  const reply = await askOllama(messages);
+    // 3. Finding relavaton document sources
+    const relevantDocs = findMostRelevant(queryEmbedding, documents);
 
-  // 4. Save the user's message and the reply
-  await saveMessage(sessionId, "user", userMessage);
-  await saveMessage(sessionId, "assistant", reply);
+    const context = relevantDocs.length
+      ? relevantDocs.map(d => d.text).join("\n\n")
+      : "Nessun documento rilevante.";
 
-  return reply;
+    // 4. Build the prompt with system prompt, history, and user message
+    const messages = buildPrompt(history, userMessage);
+
+    // 5. Ask the model
+    const response = await askOllama(messages);
+
+    // 6. Save the user's message and the reply
+    await saveMessage(sessionId, "user", userMessage);
+    await saveMessage(sessionId, "assistant", response);
+
+    return reply;
+  }
+  catch (error)
+  {
+      console.log(error);
+  }
+
 }
 
 export { handleChat };

@@ -38,4 +38,4 @@ function findMostRelevant(queryEmbedding, documents, topK = 3){
 
 }
 
-export {findMostRelevant};
+export default {findMostRelevant};

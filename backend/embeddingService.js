@@ -14,4 +14,4 @@ async function createEmbedding(text){
     return data.embedding
 }
 
-export {createEmbedding};
+export default {createEmbedding};
