@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { handleChat } from './chatService.js';
 import { initDatabase } from './database.js';
-import { loadDocuments } from './documentLoader.js';
+import { indexDocuments, loadDocuments } from './documentLoader.js';
 
 async function Init()
 {
@@ -24,10 +24,18 @@ async function Init()
     }
 
     // Loading documents
-    const documents = loadDocuments("./documents");
+    const documents = await indexDocuments("./documents").then(() => console.log("Document history successfully loaded"));
 
+    // Init the chat message history
+    await initDatabase().then(() => {
+      console.log("Database initialized");
+    }).catch((err) => {
+      console.error("Error initializing database:", err);
+    });
+
+    // Setting up the server endpoints.
     app.get('/test', (req, res) => {
-      res.json({ message: "Server funzionante!" });
+      res.json({ message: "Server up and running!" });
     });
 
     app.post('/chat', async (req, res) => {
@@ -42,14 +50,8 @@ async function Init()
       }
     });
 
-  app.listen(3001, () => {
+    app.listen(3001, () => {
     console.log("Server running on port 3001...");
-    // Initialize the database when the server starts
-    initDatabase().then(() => {
-      console.log("Database initialized");
-    }).catch((err) => {
-      console.error("Error initializing database:", err);
-    });
   });
 
 }

@@ -1,7 +1,36 @@
 import fs from "fs";
 import path from "path";
+import chunkText from "./textChunker.js"
+import createEmbedding from "./embeddingService.js"
 
-function loadDocuments(folderPath){
+export async function indexDocuments(folderPath){
+
+    const rawDocs = loadDocuments(folderPath);
+
+    const indexedDocs = [];
+
+    for(const doc of rawDocs)
+    {
+
+        const chunks = chunkText(doc.content);
+
+        for(const chunk of chunks)
+        {
+
+            const embedding = await createEmbedding(chunk);
+
+            indexedDocs.push({
+                file: doc.file,
+                text: chunk,
+                embedding
+            });
+        }
+    }
+
+    return indexedDocs;
+}
+
+export function loadDocuments(folderPath){
 
     const files = fs.readdirSync(folderPath);
 
@@ -15,11 +44,11 @@ function loadDocuments(folderPath){
 
         documents.push({
             file: file,
-            content: content
+            content: content,
+            embedding: []
         });
     }
 
     return documents;
 }
 
-export {loadDocuments};

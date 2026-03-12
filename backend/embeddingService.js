@@ -1,4 +1,4 @@
-async function createEmbedding(text){
+export default async function createEmbedding(text){
 
     const response = await fetch("http://localhost:11434/api/embeddings", {
         method: "POST",
@@ -13,5 +13,3 @@ async function createEmbedding(text){
 
     return data.embedding
 }
-
-export default {createEmbedding};

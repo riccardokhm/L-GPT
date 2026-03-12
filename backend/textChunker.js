@@ -1,19 +1,18 @@
-function chunkText(text, chunkSize = 500){
+export default function chunkText(text, chunkSize = 500){
 
-    const words = text.split(" ")
+    const words = text.split(" ");
 
-    let chunks = []
+    let chunks = [];
 
     for(let i = 0; i < words.length; i += chunkSize){
 
-        const chunk = words.slice(i, i + chunkSize).join(" ")
+        const chunk = words.slice(i, i + chunkSize).join(" ");
 
-        chunks.push(chunk)
+        chunks.push(chunk);
 
     }
 
-    return chunks
+    return chunks;
 
 }
 
-export default {chunkText};

@@ -4,7 +4,6 @@ import { askOllama } from './ollamaService.js';
 import buildPrompt from './promptBuilder.js';
 import createEmbedding from "./embeddingService.js";
 import findMostRelevant from "./vectorSearch.js";
-import { error } from 'console';
 
 async function handleChat(sessionId, userMessage, documents) {
 
@@ -13,7 +12,6 @@ async function handleChat(sessionId, userMessage, documents) {
     // 1. Retrieve chat history (previous messages)
     const history = await getMessagesBySession(sessionId);
 
-    
     // 2. Create the prompt embedding
     const embedding = await createEmbedding(userMessage);
 
