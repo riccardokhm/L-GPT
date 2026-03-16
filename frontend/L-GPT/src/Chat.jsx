@@ -3,29 +3,25 @@ import { sendMessage } from "./api"
 
 function Chat(){
 
-    const [messages,setMessages] = useState([])
-    const [input,setInput] = useState("")
+    const [messages,setMessages] = useState([]);
+    const [input,setInput] = useState("Ask me something...");
 
     async function handleSend(){
 
-    const userMessage = {
-        role:"user",
-        content: input
-    }
+        const userMessage = {role:"user",content: input};
 
-    setMessages(prev => [...prev,userMessage])
+        setMessages(prev => [...prev,userMessage]);
 
-    const reply = await sendMessage(input,"session1")
+        const reply = await sendMessage(input,"session1");
 
-    const aiMessage = {
-    role:"assistant",
-    content: reply
-    }
+        const aiMessage = {
+            role:"assistant",
+            content: reply
+        };
 
-    setMessages(prev => [...prev,aiMessage])
-
-    setInput("")
- }
+        setMessages(prev => [...prev,aiMessage]);
+        setInput("");
+    };
 
  return (
   <div>
@@ -52,4 +48,4 @@ function Chat(){
 
 }
 
-export default Chat
+export default Chat;

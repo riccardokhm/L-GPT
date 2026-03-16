@@ -16,14 +16,14 @@ async function handleChat(sessionId, userMessage, documents) {
     const embedding = await createEmbedding(userMessage);
 
     // 3. Finding relavaton document sources
-    const relevantDocs = findMostRelevant(queryEmbedding, documents);
+    const relevantDocs = findMostRelevant(embedding, documents);
 
     const context = relevantDocs.length
       ? relevantDocs.map(d => d.text).join("\n\n")
-      : "Nessun documento rilevante.";
+      : "No relevants documents.";
 
     // 4. Build the prompt with system prompt, history, and user message
-    const messages = buildPrompt(history, userMessage);
+    const messages = buildPrompt(history, userMessage, context);
 
     // 5. Ask the model
     const response = await askOllama(messages);
@@ -32,7 +32,7 @@ async function handleChat(sessionId, userMessage, documents) {
     await saveMessage(sessionId, "user", userMessage);
     await saveMessage(sessionId, "assistant", response);
 
-    return reply;
+    return response;
   }
   catch (error)
   {

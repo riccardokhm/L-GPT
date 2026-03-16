@@ -26,4 +26,4 @@ function buildPrompt(history, userMessage, context) {
 
 }
 
-export default buildPrompt
+export default buildPrompt;

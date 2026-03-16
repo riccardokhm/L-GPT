@@ -7,11 +7,14 @@ async function askOllama(messages) {
     {
       model: 'llama3',
       messages: messages,
-      stream: false
+      stream: true
     }
+    // {
+    //   responseType:"stream"
+    // }
   );
 
-  return response.data.message.content;
+  return response.data.message.content; //response.data
 }
 
 export { askOllama };

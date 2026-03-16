@@ -21,6 +21,9 @@ function cosineSimilarity(a, b){
 
 function findMostRelevant(queryEmbedding, documents, topK = 3){
 
+    if(documents.length == 0)
+        return null;
+    
     const scored = documents.map(doc => {
 
         const score = cosineSimilarity(queryEmbedding, doc.embedding)

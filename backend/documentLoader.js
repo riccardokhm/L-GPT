@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import chunkText from "./textChunker.js"
 import createEmbedding from "./embeddingService.js"
+import { saveEmbeddings } from "./vectorStore.js";
 
 export async function indexDocuments(folderPath){
 
@@ -11,7 +12,6 @@ export async function indexDocuments(folderPath){
 
     for(const doc of rawDocs)
     {
-
         const chunks = chunkText(doc.content);
 
         for(const chunk of chunks)
@@ -26,6 +26,8 @@ export async function indexDocuments(folderPath){
             });
         }
     }
+
+    saveEmbeddings(indexDocuments);
 
     return indexedDocs;
 }

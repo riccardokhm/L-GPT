@@ -1,15 +1,15 @@
 export default async function createEmbedding(text){
 
-    const response = await fetch("http://localhost:11434/api/embeddings", {
+    const response = await fetch("http://localhost:11434/api/embed", {
         method: "POST",
         headers:{ "Content-Type":"application/json"},
         body: JSON.stringify({
             model: "nomic-embed-text",
             prompt: text
         })
-    })
+    });
 
-    const data = await response.json()
+    const data = await response.json();
 
-    return data.embedding
+    return data.embedding;
 }
