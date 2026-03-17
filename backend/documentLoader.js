@@ -10,6 +10,12 @@ export async function indexDocuments(folderPath){
 
     const indexedDocs = [];
 
+    if(rawDocs == null)
+    {
+        console.log("No documents indexed...");
+        return null;
+    }
+
     for(const doc of rawDocs)
     {
         const chunks = chunkText(doc.content);
@@ -35,22 +41,25 @@ export async function indexDocuments(folderPath){
 export function loadDocuments(folderPath){
 
     const files = fs.readdirSync(folderPath);
-
     let documents = [];
 
-    for(const file of files){
+    if(files.length != 0){
+        for(const file of files){
 
-        const fullPath = path.join(folderPath, file);
+            const fullPath = path.join(folderPath, file);
+            const content = fs.readFileSync(fullPath, "utf-8");
 
-        const content = fs.readFileSync(fullPath, "utf-8");
+            documents.push({
+                file: file,
+                content: content,
+                embedding: []
+            });
+        }
 
-        documents.push({
-            file: file,
-            content: content,
-            embedding: []
-        });
+        return documents;
     }
 
-    return documents;
+    return null;
+    
 }
 

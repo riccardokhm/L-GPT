@@ -18,7 +18,6 @@ function Chat(){
             role:"assistant",
             content: reply
         };
-
         setMessages(prev => [...prev,aiMessage]);
         setInput("");
     };
@@ -33,15 +32,8 @@ function Chat(){
      </div>
     ))}
    </div>
-
-   <input
-    value={input}
-    onChange={(e)=>setInput(e.target.value)}
-   />
-
-   <button onClick={handleSend}>
-    Send
-   </button>
+   <input value={input} onChange={(e)=>setInput(e.target.value)} />
+   <button onClick={handleSend}> Send </button>
 
   </div>
  )

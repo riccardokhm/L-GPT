@@ -9,15 +9,23 @@ async function handleChat(sessionId, userMessage, documents) {
 
   try
   {
+
+    let relevantDocs = [];
+
     // 1. Retrieve chat history (previous messages)
     const history = await getMessagesBySession(sessionId);
 
-    // 2. Create the prompt embedding
-    const embedding = await createEmbedding(userMessage);
+    if(documents?.length)
+    {
+      // 2. Create the prompt embedding
+      const embedding = await createEmbedding(userMessage);
 
-    // 3. Finding relavaton document sources
-    const relevantDocs = findMostRelevant(embedding, documents);
-
+      // 3. Finding relavaton document sources
+      if(embedding){
+        relevantDocs = findMostRelevant(embedding, documents);
+      }
+    }
+    
     const context = relevantDocs.length
       ? relevantDocs.map(d => d.text).join("\n\n")
       : "No relevants documents.";

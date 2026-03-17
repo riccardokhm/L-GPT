@@ -1,4 +1,5 @@
 // Module to handle interactions with the Ollama API for chat functionality
+// Porting to streaming the messagges.
 import axios from 'axios';
 
 async function askOllama(messages) {
@@ -7,7 +8,7 @@ async function askOllama(messages) {
     {
       model: 'llama3',
       messages: messages,
-      stream: true
+      stream: false
     }
     // {
     //   responseType:"stream"

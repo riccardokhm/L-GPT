@@ -1,4 +1,12 @@
+// Ollama API could be used instead.
+
 export default async function createEmbedding(text){
+
+    console.log("Embedding input:", text);
+
+    if(!text){
+        throw new Error("Embedding text is undefined");
+    }
 
     const response = await fetch("http://localhost:11434/api/embed", {
         method: "POST",
@@ -11,5 +19,15 @@ export default async function createEmbedding(text){
 
     const data = await response.json();
 
-    return data.embedding;
+    console.log("Embedding response:", data);
+
+    if(!data.embeddings){
+        throw new Error("Embedding generation failed");
+    }
+
+    return data.embeddings;
 }
+
+
+
+

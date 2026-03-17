@@ -38,8 +38,8 @@ async function Init()
         else{
             console.log("No stored embeddings found, indexing documents...");
             documents = await indexDocuments("./documents");
-            if (documents.length == 0)
-              console.log("No stored embeddings found, indexing documents...");
+            if (documents)
+              console.log("No context provided...");
         }
     }
     catch (error){
@@ -86,7 +86,7 @@ async function Init()
     }});
 
     app.listen(3001, () => {
-    console.log("Server running on port 3001...");
+      console.log("Server running on port 3001...");
   });
 
 }
